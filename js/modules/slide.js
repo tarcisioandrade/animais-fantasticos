@@ -6,8 +6,7 @@ export class Slide {
     this.wrapper = document.querySelector(wrapper);
     this.dist = { finalPosition: 0, startX: 0, movement: 0 };
     this.activeClass = 'active';
-
-    this.changeEvent = new Event("changeEvent");
+    this.changeEvent = new Event('changeEvent');
   }
 
   transition(active) {
@@ -102,7 +101,7 @@ export class Slide {
   }
 
   changeActiveClass() {
-    this.slideArray.forEach((item) => item.element.classList.remove(this.activeClass));
+    this.slideArray.forEach(item => item.element.classList.remove(this.activeClass));
     this.slideArray[this.index.active].element.classList.add(this.activeClass);
   }
 
@@ -130,9 +129,10 @@ export class Slide {
     this.onMove = this.onMove.bind(this);
     this.onEnd = this.onEnd.bind(this);
 
-    this.onResize = debounce(this.onResize.bind(this), 200);
     this.activePrevSlide = this.activePrevSlide.bind(this);
     this.activeNextSlide = this.activeNextSlide.bind(this);
+
+    this.onResize = debounce(this.onResize.bind(this), 200);
   }
 
   init() {
@@ -146,7 +146,7 @@ export class Slide {
   }
 }
 
-export default class Slidenav extends Slide {
+export default class SlideNav extends Slide {
   constructor(slide, wrapper) {
     super(slide, wrapper);
     this.bindControlEvents();
@@ -159,13 +159,13 @@ export default class Slidenav extends Slide {
   }
 
   addArrowEvent() {
-    this.prevElement.addEventListener("click", this.activePrevSlide);
-    this.nextElement.addEventListener("click", this.activeNextSlide);
+    this.prevElement.addEventListener('click', this.activePrevSlide);
+    this.nextElement.addEventListener('click', this.activeNextSlide);
   }
 
   createControl() {
-    const control = document.createElement("ul");
-    control.dataset.control = "slide";
+    const control = document.createElement('ul');
+    control.dataset.control = 'slide';
     this.slideArray.forEach((item, index) => {
       control.innerHTML += `<li><a href="#slide${index + 1}">${index + 1}</a></li>`;
     });
@@ -174,21 +174,22 @@ export default class Slidenav extends Slide {
   }
 
   eventControl(item, index) {
-    item.addEventListener("click", (event) => {
+    item.addEventListener('click', (event) => {
       event.preventDefault();
       this.changeSlide(index);
     });
-    this.wrapper.addEventListener("changeEvent", this.activeControlItem);
+    this.wrapper.addEventListener('changeEvent', this.activeControlItem);
   }
 
   activeControlItem() {
-    this.controlArray.forEach((item) => item.classList.remove(this.activeClass));
+    this.controlArray.forEach(item => item.classList.remove(this.activeClass));
     this.controlArray[this.index.active].classList.add(this.activeClass);
   }
 
   addControl(customControl) {
     this.control = document.querySelector(customControl) || this.createControl();
     this.controlArray = [...this.control.children];
+
     this.activeControlItem();
     this.controlArray.forEach(this.eventControl);
   }
